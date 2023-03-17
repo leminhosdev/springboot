@@ -8,6 +8,7 @@ import academy.requests.AnimeputDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -20,13 +21,19 @@ public class AnimeService {
     public List<Anime> Listall(){
         return animeRepository.findAll();
     }
-    public Anime findbyOrThrowBadResquestException(long id){
-        return animeRepository.findById(id).orElseThrow(() ->new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
+    public List<Anime> findbyname(String name){
+        return animeRepository.findByName(name);
     }
+    public Anime findbyOrThrowBadResquestException(long id){
+        return animeRepository.findById(id).
+                orElseThrow(() ->new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
+    }
+    @Transactional
     public Anime save(AnimeDTO animedto){
         return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animedto));
     }
 
+   // return animeRepository.save(Anime.builder().name(animedto.getName()).build());
     public void delete(long id) {
        animeRepository.delete(findbyOrThrowBadResquestException(id));
     }

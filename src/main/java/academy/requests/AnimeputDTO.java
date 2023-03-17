@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 public class AnimeputDTO {
     private Long id;
+
     private String name;
 
 }
